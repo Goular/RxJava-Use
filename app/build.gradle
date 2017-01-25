@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.goular.rxjava"
-        minSdkVersion 21
+        minSdkVersion 18
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -26,4 +26,10 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.0'
     testCompile 'junit:junit:4.12'
+
+    compile 'com.orhanobut:logger:1.15' //这个用于替代Android的Log类所使用，使用起来比较好看
+    //compile "io.reactivex.rxjava2:rxjava:2.0.4" //RxJava
+    compile 'io.reactivex:rxjava:1.2.5'
+    //compile 'io.reactivex.rxjava2:rxandroid:2.0.1'//RxAndroid
+    compile 'io.reactivex:rxandroid:1.2.1'
 }
