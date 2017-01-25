@@ -3,6 +3,7 @@ package com.goular.rxjava;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.goular.rxjava.lambda.Lambda;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
@@ -50,7 +51,10 @@ public class RxJavaBaseUseActivity extends AppCompatActivity {
         //test04();
 
         //链式编程体验
-        test00();
+        //test00();
+
+        //直接体验lamdba的表达式的体验
+        Lambda.testLambda(this);
     }
 
     /**
