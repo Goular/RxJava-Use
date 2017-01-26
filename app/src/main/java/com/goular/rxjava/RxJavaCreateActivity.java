@@ -6,13 +6,16 @@ import android.support.v7.app.AppCompatActivity;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func0;
+import rx.functions.Func1;
 import rx.functions.Func2;
+import rx.observables.GroupedObservable;
 
 /**
  * RxJava创建操作的例子
@@ -43,7 +46,17 @@ public class RxJavaCreateActivity extends AppCompatActivity {
 
         //testError();
 
-        testScan();
+        //testScan();
+
+        //testGroupBy();
+
+        //testBuffer();
+
+        //testWindow();
+
+        //testFilter();
+
+        testTakeLast();
     }
 
     //defer( ) — 只有当订阅者订阅才创建Observable；为每个订阅创建一个新的Observable
@@ -194,5 +207,92 @@ public class RxJavaCreateActivity extends AppCompatActivity {
         //Observable.just(1, 2, 3, 4, 5)
         //        .scan((integer1,integer2)->{return integer1+integer2;})
         //        .subscribe((integer)->Logger.d("RxJava::" + integer));
+    }
+
+    //groupBy( ) — 将Observable分拆为Observable集合，将原始Observable发射的数据按Key分组，每一个Observable发射一组不同的数据
+    public void testGroupBy() {
+        Observable.just(1, 2, 3, 4, 5).groupBy(new Func1<Integer, Integer>() {
+            @Override
+            public Integer call(Integer integer) {
+                return integer * 2;
+            }
+        })
+                .subscribe(new Action1<GroupedObservable<Integer, Integer>>() {
+                    @Override
+                    public void call(GroupedObservable<Integer, Integer> groupedObservable) {
+                        groupedObservable.subscribe(new Action1<Integer>() {
+                            @Override
+                            public void call(Integer integer) {
+                                Logger.d("testGroupBy::key:" + groupedObservable.getKey() + ":value:" + integer);
+                            }
+                        });
+                    }
+                });
+    }
+
+    //buffer( ) — 它定期从Observable收集数据到一个集合，然后把这些数据集合打包发射，而不是一次发射一个
+    public void testBuffer() {
+        Observable.just(1, 2, 3, 4, 5, 6, 7)
+                .buffer(2, 1)
+                .subscribe(new Action1<List<Integer>>() {
+                    @Override
+                    public void call(List<Integer> integers) {
+                        String result = "";
+                        for (Integer str : integers) {
+                            result += str;
+                        }
+                        Logger.d("testBuffer::" + result);
+                    }
+                });
+    }
+
+    //window( ) — 定期将来自Observable的数据分拆成一些Observable窗口，然后发射这些窗口，而不是每次发射一项
+    public void testWindow() {
+        Observable.just(1, 2, 3, 4, 5, 6, 7, 8)
+                .window(2, 1)
+                .subscribe(new Action1<Observable<Integer>>() {
+                    @Override
+                    public void call(Observable<Integer> observable) {
+                        observable.subscribe(new Action1<Integer>() {
+                            @Override
+                            public void call(Integer integer) {
+                                Logger.d("testWindow::" + integer);
+                            }
+                        });
+                    }
+                });
+    }
+
+    //filter( ) — 过滤数据
+    public void testFilter() {
+        Observable.just(1, 2, 3, 4, 5, 6, 7, 8)
+                .filter(new Func1<Integer, Boolean>() {
+                    @Override
+                    public Boolean call(Integer integer) {
+                        return integer % 2 == 0;
+                    }
+                }).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+                Logger.d("testFilter::" + integer);
+            }
+        });
+    }
+
+    //takeLast( ) — 只发射最后的N项数据
+    public void testTakeLast() {
+        Observable.just(1, 2, 3, 4, 5, 6, 7, 8)
+                .takeLast(4)
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer integer) {
+                        Logger.d("testTakeLast::" + integer);
+                    }
+                });
+    }
+
+    //last( ) — 只发射最后的一项数据
+    public void testLast(){
+
     }
 }
