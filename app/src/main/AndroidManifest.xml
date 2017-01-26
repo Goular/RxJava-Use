@@ -9,8 +9,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".RxJavaBaseUseActivity" />
-        <activity android:name=".RxJavaCreateActivity"></activity>
-        <activity android:name=".RxJavaMapActivity">
+        <activity android:name=".RxJavaCreateActivity" />
+        <activity android:name=".RxJavaMapActivity"></activity>
+        <activity android:name=".RxAndroidActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

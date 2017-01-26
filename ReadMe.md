@@ -403,13 +403,17 @@ observeOn能调用多次
 
 </pre>
 
-###
+###RxAndroid使用
 <pre>
+    由于Rx已经将各种各样的内容从RxAndroid中分开，所以RxAndriod使用的仅仅留下Android的调度器，即MainThread和from(looper)
+
 
 </pre>
-###
-<pre>
 
+###doOnSubscribe
+<pre>
+    Rxandroid中doOnSubscribe()，如何指定其运行的线程？
+    //在订阅后，事件发射前，执行一些代码
 </pre>
 
 ###
