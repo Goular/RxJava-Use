@@ -1,15 +1,15 @@
-#RxJava使用笔记
+# RxJava使用笔记
 
-##RxJava基础
+## RxJava基础
 
-###创建Observable 
+### 创建Observable 
 <pre>
 Observable的创建操作符：
 	比如： create(),from(),just(),repeat(),defer(),range(),
 				 interval(),和timer()等等
 </pre>
 
-###创建Observer
+### 创建Observer
 <pre>
 Observer用于处理Observable发送过来的各类事件。
 可以用Operators(操作符)对事件进行各种拦截和操作。
@@ -19,13 +19,13 @@ RxJava 还创建了一个继承了 Observer 的抽象类：Subscriber：
     Subscriber 进行了一些扩展，基本使用方式是一样的，这也是以后我们主要用到的一个类
 </pre>
 
-###Subscribe 订阅
+### Subscribe 订阅
 <pre>
     通过subscribe()方法订阅，把observable和observer关联起来
 	订阅后，observable就会调用observer的onNext()、onCompleted()、onError()等方法。
 </pre>
 
-###RxJava的操作符
+### RxJava的操作符
 <pre>
 RxJava中提供了大量不同种类，不同场景的Operators(操作符)，RxJava的强大性就来自于它所定义的操作符。主要分类：
 
@@ -380,7 +380,7 @@ RxJava中提供了大量不同种类，不同场景的Operators(操作符)，RxJ
     11-06 04:44:28.321 25785-25785/keye.com.rxjavaobserver D/RxJava: 6
 </pre>
 
-###线程控制-Scheduler
+### 线程控制-Scheduler
 <pre>
 1.Scheduler的API：
 用于控制操作符和被观察者事件，所执行的线程
@@ -403,14 +403,14 @@ observeOn能调用多次
 
 </pre>
 
-###RxAndroid使用
+### RxAndroid使用
 <pre>
     由于Rx已经将各种各样的内容从RxAndroid中分开，所以RxAndriod使用的仅仅留下Android的调度器，即MainThread和from(looper)
 
 
 </pre>
 
-###doOnSubscribe
+### doOnSubscribe
 <pre>
     Rxandroid中doOnSubscribe()，如何指定其运行的线程？
     //在订阅后，事件发射前，执行一些代码
