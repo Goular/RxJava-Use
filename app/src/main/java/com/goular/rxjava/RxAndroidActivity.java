@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 

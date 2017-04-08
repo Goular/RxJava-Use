@@ -32,7 +32,7 @@ public class RxJavaBaseUseActivity extends AppCompatActivity {
 
 
         //执行Observable - create 的基本用法
-        //test01();
+        test01();
 
         //执行Observable - from 的基本用法
         //执行的是:
@@ -54,7 +54,7 @@ public class RxJavaBaseUseActivity extends AppCompatActivity {
         //test00();
 
         //直接体验lamdba的表达式的体验
-        Lambda.testLambda(this);
+        //Lambda.testLambda(this);
     }
 
     /**

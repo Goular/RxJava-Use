@@ -378,6 +378,13 @@ RxJava中提供了大量不同种类，不同场景的Operators(操作符)，RxJ
     11-06 04:44:28.321 25785-25785/keye.com.rxjavaobserver D/RxJava: 3
     11-06 04:44:28.321 25785-25785/keye.com.rxjavaobserver D/RxJava: 5
     11-06 04:44:28.321 25785-25785/keye.com.rxjavaobserver D/RxJava: 6
+    
+    ThrottleFirst 
+        操作符则会定期发射这个时间段里源Observable发射的第一个数据
+        一般用于Android的消除抖动，防止误按
+    
+    switchMap
+        和flatMap()很像，除了一点:当源Observable发射一个新的数据项时，如果旧数据项订阅还未完成，就取消旧订阅数据和停止监视那个数据项产生的Observable,开始监视新的数据项.
 </pre>
 
 ### 线程控制-Scheduler
@@ -405,7 +412,7 @@ observeOn能调用多次
 
 ### RxAndroid使用
 <pre>
-    由于Rx已经将各种各样的内容从RxAndroid中分开，所以RxAndriod使用的仅仅留下Android的调度器，即MainThread和from(looper)
+    由于Rx已经将各种各样的内容从RxAndroid中分开，所以RxAndriod使用的仅仅留下Android的调度器，即AndroidSchedulers.MainThread和AndroidSchedulers.from(looper)
 
 
 </pre>
@@ -413,27 +420,72 @@ observeOn能调用多次
 ### doOnSubscribe
 <pre>
     Rxandroid中doOnSubscribe()，如何指定其运行的线程？
-    //在订阅后，事件发射前，执行一些代码
+    
+    在订阅后，事件发射前，执行一些代码,会使用doOnSubscribe(Action0(){}),该方法的线程为注册订阅的线程为主，可以是主线程，可以是子线程。
 </pre>
 
-###
+### Subscription
 <pre>
-
+    RxJava中有个叫做Subscription的接口,可以用来取消订阅.
 </pre>
 
-###
+### RxBinding 
 <pre>
-
+    使用场景:
+        1.防抖处理
+        2.选中状态联动
+        3.自动补全Text
+          
 </pre>
-###
-<pre>
 
+### 重点，View的取消订阅
+<pre>
+    请注意一个问题，由于RxBinding订阅的时候，我们的View是被使用的，退出页面时，由于存在绑定，所以当前页面(Activity/Fragment)都是不能结束掉的，因为存在View的实例引用，
+    所以必须在onDestory中取消订阅
 </pre>
-###
-<pre>
 
+### checkNotNull(T)
+<pre>
+    Guava中提供了一个作参数检查的工具类--Preconditions, 静态导入这个类, 可以大大地简化代码中对于参数的预判断和处理.
+    
+    import static com.google.common.base.Preconditions.*;
+    在以前, 我们需要判断一个参数不为空的话, 需要像下面这样写
+    
+    public void testMethod(Object obj) {
+        if (obj == null) {
+            throw new NullPointerException();
+        }
+        // ... other operations
+    }
+     每次都要添加if语句来做判断, 重复的工作会做好多次. 使用Preconditions可以简化成下面这样
+    
+    public void testMethod(Object obj) {
+        Object other = checkNotNull(obj);
+        // ... other operations
+    }
+     checkNotNull会检查参数是否为null, 当为null的时候会抛出NullPointerException, 否则直接返回参数.
+    
+    checkNotNull, checkArgument和checkState, 都有三种形式的参数:
+    
+    public static <T> T checkNotNull(T reference), 只包含需要判断的对象, 无其他多余的参数, 抛出的异常不带有任何异常信息
+    public static <T> T checkNotNull(T reference, @Nullable Object errorMessage), 包含一个错误信息的额外参数, 抛出的异常带有errorMessage.toString()的异常信息
+    public static <T> T checkNotNull(T reference, @Nullable String errorMessageTemplate, @Nullable Object... errorMessageArgs), 这种是printf风格的错误信息, 后面是变参, errorMessageTemplate可以使用一些占位符. 例如可以这样写
+     
+    
+    checkArgument(i >= 0, "Argument was %s but expected nonnegative", i);
+    checkArgument(i < j, "Expected i < j, but %s > %s", i, j);
+    捕获异常后可以获取自定义的详细错误信息, 对于调试来说很有帮助, 而且代码也很简洁. 例如,
+    
+    Object obj = null;
+    try {
+        checkNotNull(obj, "cannot be null");
+    } catch(Exception e) {
+        System.out.println(e.getMessage());
+    }
+     运行后可
 </pre>
-###
-<pre>
 
+### MainThreadSubscription（MainThreadSubscription类主要在意的就是unsubscribe的执行线程，这里采取一切方式保证其在主线程中执行。）
+<pre>
+    verifyMainThread:判断是否是主线程操作
 </pre>
